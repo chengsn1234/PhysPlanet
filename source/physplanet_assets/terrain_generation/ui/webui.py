@@ -76,9 +76,9 @@ class _CliOverrides:
 def _clean_output_name(output_name, field_name="output_name"):
     name = (output_name or "").strip()
     if not name:
-        raise ValueError(f"请填 {field_name}")
+        raise ValueError(f"Please fill in {field_name}")
     if name in {".", ".."} or not _OUTPUT_NAME_RE.fullmatch(name):
-        raise ValueError(f"{field_name} 只能包含字母、数字、下划线、点和短横线")
+        raise ValueError(f"{field_name} may only contain letters, digits, underscores, dots and dashes")
     return name
 
 
@@ -87,7 +87,7 @@ def _optional_positive_int(value, field_name):
         return None
     ivalue = int(value)
     if ivalue < 1:
-        raise ValueError(f"{field_name} 必须 >= 1")
+        raise ValueError(f"{field_name} must be >= 1")
     return ivalue
 
 
@@ -96,7 +96,7 @@ def _optional_nonnegative_int(value, field_name):
         return None
     ivalue = int(value)
     if ivalue < 0:
-        raise ValueError(f"{field_name} 不能为负")
+        raise ValueError(f"{field_name} must be non-negative")
     return ivalue
 
 
@@ -105,7 +105,7 @@ def _optional_nonnegative_float(value, field_name):
         return None
     fvalue = float(value)
     if fvalue < 0:
-        raise ValueError(f"{field_name} 不能为负")
+        raise ValueError(f"{field_name} must be non-negative")
     return fvalue
 
 
@@ -114,7 +114,7 @@ def _optional_positive_float(value, field_name):
         return None
     fvalue = float(value)
     if fvalue <= 0:
-        raise ValueError(f"{field_name} 必须 > 0")
+        raise ValueError(f"{field_name} must be > 0")
     return fvalue
 
 
@@ -124,11 +124,11 @@ def _float_list(value, field_name):
     else:
         text = str(value or "").strip()
         if not text:
-            raise ValueError(f"{field_name} 不能为空")
+            raise ValueError(f"{field_name} must not be empty")
         items = re.split(r"[\s,]+", text)
     values = [float(v) for v in items if str(v).strip()]
     if not values or any(v <= 0 for v in values):
-        raise ValueError(f"{field_name} 必须是正数列表")
+        raise ValueError(f"{field_name} must be a list of positive numbers")
     return values
 
 
@@ -164,10 +164,10 @@ def local_hm_preview(hm_name):
     if not path and hm_name and hm_name.startswith("HM"):
         path = os.path.join(_MODELS_DIR, "heightmaps", hm_name + ".png")
     if not path or not os.path.exists(path):
-        return None, "请选择 heightmap"
+        return None, "Please select a heightmap"
     img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     if img is None:
-        return None, f"读 heightmap 失败: {hm_name}"
+        return None, f"Failed to read heightmap: {hm_name}"
     return _heightmap_preview_from_array(img), f"{hm_name}  {img.shape[1]}×{img.shape[0]}  {img.dtype}"
 
 
@@ -182,9 +182,9 @@ def perlin_hm_preview(resolution, seed, scale, octaves, persistence, lacunarity)
 def _download_progress(progress, done_bytes, total_bytes):
     done_mb = done_bytes // 1024 // 1024
     if total_bytes and total_bytes > 0:
-        progress(done_bytes / total_bytes, desc=f"下载 {done_mb}MB")
+        progress(done_bytes / total_bytes, desc=f"Downloading {done_mb} MB")
     else:
-        progress(0, desc=f"下载 {done_mb}MB")
+        progress(0, desc=f"Downloading {done_mb} MB")
 
 
 def _layers_to_table(cfg):
@@ -205,13 +205,13 @@ def _layers_to_table(cfg):
 def _required_text(value, field_name):
     text = str(value or "").strip()
     if not text:
-        raise ValueError(f"请填 {field_name}")
+        raise ValueError(f"Please fill in {field_name}")
     return text
 
 
 def _required_float(value, field_name):
     if value is None or value == "":
-        raise ValueError(f"{field_name} 不能为空")
+        raise ValueError(f"{field_name} must not be empty")
     return float(value)
 
 
@@ -224,19 +224,19 @@ def _table_to_layers(table):
             continue
         values = list(row) + [""] * (len(_PHYSICS_HEADERS) - len(row))
         soil = {
-            key: _required_float(values[5 + j], f"physics 第 {i + 1} 行 {key}")
+            key: _required_float(values[5 + j], f"physics row {i + 1}: {key}")
             for j, key in enumerate(SOIL_KEYS)
         }
         layers.append({
-            "name": _required_text(values[0], f"physics 第 {i + 1} 行 name"),
-            "path": _required_text(values[1], f"physics 第 {i + 1} 行 path"),
-            "static_friction": _required_float(values[2], f"physics 第 {i + 1} 行 static_friction"),
-            "dynamic_friction": _required_float(values[3], f"physics 第 {i + 1} 行 dynamic_friction"),
-            "restitution": _required_float(values[4], f"physics 第 {i + 1} 行 restitution"),
+            "name": _required_text(values[0], f"physics row {i + 1}: name"),
+            "path": _required_text(values[1], f"physics row {i + 1}: path"),
+            "static_friction": _required_float(values[2], f"physics row {i + 1}: static_friction"),
+            "dynamic_friction": _required_float(values[3], f"physics row {i + 1}: dynamic_friction"),
+            "restitution": _required_float(values[4], f"physics row {i + 1}: restitution"),
             "soil": soil,
         })
     if not layers:
-        raise ValueError("physics 至少保留一行")
+        raise ValueError("physics needs at least one row")
     return layers
 
 
@@ -256,11 +256,11 @@ def _hirise_choices():
     try:
         for it in hirise.parse_dtm_index():
             seen.add(it["dtm_id"])
-            tag = "[本地] " if it["dtm_id"] in local else "[可下载] "
+            tag = "[local] " if it["dtm_id"] in local else "[downloadable] "
             items.append(f"{tag}{it['title'][:40]} ({it['dtm_id']})")
     except Exception:
         pass
-    local_only = [f"[本地] {dtm_id}" for dtm_id in sorted(local - seen)]
+    local_only = [f"[local] {dtm_id}" for dtm_id in sorted(local - seen)]
     return local_only + items
 
 
@@ -269,8 +269,8 @@ def _parse_dtm_choice(choice):
         return None
     if "(" in choice and choice.endswith(")"):
         return choice[choice.rfind("(") + 1:-1]
-    if choice.startswith("[本地] "):
-        return choice[len("[本地] "):]
+    if choice.startswith("[local] "):
+        return choice[len("[local] "):]
     return None
 
 
@@ -301,7 +301,7 @@ def _trim_preview_for_display(preview):
 
 
 def _hirise_load_result(preview, crop, state, status, cx=None, cy=None):
-    coord = f"中心: ({cx}, {cy}) px" if cx is not None and cy is not None else "中心: 未选择"
+    coord = f"Center: ({cx}, {cy}) px" if cx is not None and cy is not None else "Center: not selected"
     return preview, crop, state, status, cx, cy, coord
 
 
@@ -371,26 +371,26 @@ def _hirise_update_crop(preview_state, cx, cy, half_prev):
             )
             crop = hirise.to_elevation_rgb(elev)
         except Exception as exc:
-            note = f"⚠️ 高分辨率 DTM 裁剪预览失败,暂用屏幕预览: {exc}"
+            note = f"⚠️ High-res DTM crop preview failed; falling back to the screen preview: {exc}"
 
     black_ratio = hirise.black_pixel_ratio(crop)
     if not note and black_ratio > 0.2:
-        note = (f"⚠️ 当前裁剪预览约 {black_ratio:.0%} 是黑边/无数据区域。"
-                "建议把框往有效影像内部挪一点。")
+        note = ("⚠️ About {:.0%} of the current crop is black/no-data area; "
+                "move the box further into the valid image region.".format(black_ratio))
     return overlay, crop, note
 
 
 def hirise_load(choice, progress=gr.Progress()):
     dtm_id = _parse_dtm_choice(choice)
     if not dtm_id:
-        return _hirise_load_result(None, None, None, "❌ 请选 DTM")
+        return _hirise_load_result(None, None, None, "❌ Please select a DTM")
     path = hirise.find_dtm_path(dtm_id) or os.path.join(_HIRISE_DATA_DIR, f"{dtm_id}.IMG")
     try:
         if not os.path.exists(path):
             entry = _hirise_entry(dtm_id)
             if not entry:
-                return _hirise_load_result(None, None, None, f"❌ CSV 里找不到 {dtm_id}")
-            progress(0, desc=f"下载 {dtm_id}...")
+                return _hirise_load_result(None, None, None, f"❌ {dtm_id} not found in the CSV index")
+            progress(0, desc=f"Downloading {dtm_id}...")
             hirise.download_dtm(dtm_id, entry["img_url"], _HIRISE_DATA_DIR,
                                 lambda d, t: _download_progress(progress, d, t))
 
@@ -416,7 +416,7 @@ def hirise_load(choice, progress=gr.Progress()):
             return _hirise_load_result(None, None, None, "❌ No left JP2")
         jp2_path = hirise.find_ortho_path(jp2_url)
         if not jp2_path:
-            progress(0, desc="下载 JP2...")
+            progress(0, desc="Downloading JP2...")
             jp2_path = hirise.download_ortho(jp2_url, _HIRISE_DATA_DIR,
                                              lambda d, t: _download_progress(progress, d, t))
         preview, src_prev_w, src_prev_h, src_w, src_h, bands = hirise.read_ortho_preview_keep_ratio(
@@ -442,7 +442,7 @@ def hirise_load(choice, progress=gr.Progress()):
         return _hirise_load_result(preview, None, state, status)
     except Exception:
         import traceback
-        return _hirise_load_result(None, None, None, f"❌ 加载失败:\n{traceback.format_exc()}")
+        return _hirise_load_result(None, None, None, f"❌ Load failed:\n{traceback.format_exc()}")
 
 
 def hirise_on_select(preview_state, half_prev, evt: gr.SelectData):
@@ -475,7 +475,7 @@ def generate_from_source(source, dtm_choice, cx, cy, half_prev, preview_state,
         rock_downsample = _optional_positive_float(rock_downsample, "rock_downsample")
         texture_resolution = _optional_positive_float(texture_resolution, "texture_resolution")
         if sky not in ("mars", "lunar"):
-            return None, None, "❌ sky 必须是 mars 或 lunar"
+            return None, None, "❌ sky must be mars or lunar"
 
         cli = _CliOverrides(
             hm=int(hm_name[2:]) if hm_name and hm_name.startswith("HM") and hm_name[2:].isdigit() else None,
@@ -493,15 +493,15 @@ def generate_from_source(source, dtm_choice, cx, cy, half_prev, preview_state,
         if source == "HiRISE DTM":
             dtm_id = _parse_dtm_choice(dtm_choice)
             if not dtm_id:
-                return None, None, "❌ 请先选择并加载 DTM"
+                return None, None, "❌ Select and load a DTM first"
             path = hirise.find_dtm_path(dtm_id)
             if not path:
-                return None, None, "❌ DTM 未下载,先点'加载预览'"
+                return None, None, "❌ DTM not downloaded — click \"Load preview\" first"
             if preview_state and preview_state.get("dtm_id") == dtm_id:
                 pxres = float(preview_state["pxres"])
                 window = _display_crop_to_dtm_window(preview_state, cx, cy, half_prev)
                 if window is None:
-                    return None, None, "❌ 预览状态无效,请重新加载预览"
+                    return None, None, "❌ Invalid preview state — reload the preview"
                 x0, y0, crop_side, _ = window
             else:
                 _, prev_w, prev_h, pxres, W, H = hirise.read_dtm_preview_keep_ratio(path, _HIRISE_PREV_MAX)
@@ -512,12 +512,12 @@ def generate_from_source(source, dtm_choice, cx, cy, half_prev, preview_state,
                 y0 = H // 2 - half_orig
 
             if crop_side * crop_side > _MAX_HIRISE_CROP_PIXELS:
-                return None, None, f"❌ 裁剪过大: {crop_side}×{crop_side}px"
+                return None, None, f"❌ Crop too large: {crop_side}x{crop_side} px"
             mesh_side = (crop_side + int(cfg.get("terrain_downsample", 1)) - 1) // int(cfg.get("terrain_downsample", 1))
             if mesh_side * mesh_side > _MAX_HIRISE_MESH_VERTICES:
-                return None, None, f"❌ mesh 过密: downsample 后约 {mesh_side}×{mesh_side} 顶点"
+                return None, None, f"❌ Mesh too dense: about {mesh_side}x{mesh_side} vertices after downsampling"
 
-            progress(0.35, desc=f"裁剪 DTM {crop_side}×{crop_side}px...")
+            progress(0.35, desc=f"Cropping DTM {crop_side}x{crop_side} px...")
             sub, _, _, _, _ = hirise.read_dtm_band(path, xoff=x0, yoff=y0,
                                                    xsize=crop_side, ysize=crop_side)
             hm_png = os.path.join(_HIRISE_DATA_DIR, f"_crop_{dtm_id}_{output_name}.png")
@@ -529,7 +529,7 @@ def generate_from_source(source, dtm_choice, cx, cy, half_prev, preview_state,
 
         elif source == "Local HM":
             if not hm_name:
-                return None, None, "❌ 请选 heightmap"
+                return None, None, "❌ Please select a heightmap"
             hm_path = _hm_path_from_name(hm_name)
             if hm_path:
                 cfg["heightmap_path"] = hm_path
@@ -544,7 +544,7 @@ def generate_from_source(source, dtm_choice, cx, cy, half_prev, preview_state,
             source_note = f"generated/perlin_{output_name}"
 
         else:
-            return None, None, "❌ 未知高程来源"
+            return None, None, "❌ Unknown height source"
 
         cfg["rock_sizes"] = rock_sizes
         cfg["texture_resolution"] = texture_resolution
@@ -552,13 +552,13 @@ def generate_from_source(source, dtm_choice, cx, cy, half_prev, preview_state,
         cfg["sky"] = sky
         cfg["texture_layers"] = _table_to_layers(physics_table)
 
-        progress(0.65, desc="生成地形...")
+        progress(0.65, desc="Generating terrain...")
         generate_terrain(cfg, output_name)
 
         out = os.path.join(_OUTPUT_DIR, output_name)
         blended = os.path.join(out, "terrain_blended.jpg")
         layers = os.path.join(out, "terrain_layers_debug.png")
-        status = (f"✅ 生成完成 → terrain/{output_name}/\n"
+        status = (f"✅ Done → terrain/{output_name}/\n"
                   f"  source={source_note}\n"
                   f"  terrain_size={cfg.get('terrain_size')}m terrain_height={cfg.get('terrain_height')}m\n"
                   f"  gt_resolution={cfg.get('gt_resolution')}m\n"
@@ -571,7 +571,7 @@ def generate_from_source(source, dtm_choice, cx, cy, half_prev, preview_state,
                 status)
     except Exception:
         import traceback
-        return None, None, f"❌ 生成失败:\n{traceback.format_exc()}"
+        return None, None, f"❌ Generation failed:\n{traceback.format_exc()}"
     finally:
         if hm_png and os.path.exists(hm_png):
             try:
@@ -606,20 +606,20 @@ with gr.Blocks(title="Terrain Generator") as demo:
     with gr.Accordion("HiRISE DTM", open=True, visible=True) as hirise_box:
         with gr.Row():
             dtm_choice = gr.Dropdown(choices=_hirise_choices(), label="DTM")
-            load_btn = gr.Button("加载预览")
-        load_status = gr.Textbox(label="状态", lines=3)
+            load_btn = gr.Button("Load preview")
+        load_status = gr.Textbox(label="Status", lines=3)
         with gr.Row():
-            hi_preview = gr.Image(type="numpy", interactive=False, label="正射预览")
-            hi_crop_preview = gr.Image(type="numpy", interactive=False, label="DTM 裁剪")
-        crop_status = gr.Textbox(label="提示", lines=1)
+            hi_preview = gr.Image(type="numpy", interactive=False, label="Ortho preview")
+            hi_crop_preview = gr.Image(type="numpy", interactive=False, label="DTM crop")
+        crop_status = gr.Textbox(label="Note", lines=1)
         with gr.Row():
-            crop_coord = gr.Textbox(label="中心", value="中心: 未选择", interactive=False)
-            half_n = gr.Number(label="半边长(px)", value=10)
+            crop_coord = gr.Textbox(label="Center", value="Center: not selected", interactive=False)
+            half_n = gr.Number(label="Half size (px)", value=10)
 
     with gr.Accordion("Local HM", open=True, visible=False) as local_box:
         hm = gr.Dropdown(choices=scan_heightmaps(), label="heightmap")
         local_hm_image = gr.Image(type="numpy", label="heightmap preview", height=360)
-        local_hm_status = gr.Textbox(label="状态", lines=1)
+        local_hm_status = gr.Textbox(label="Status", lines=1)
 
     with gr.Accordion("Perlin HM", open=True, visible=False) as perlin_box:
         with gr.Row():
@@ -632,7 +632,7 @@ with gr.Blocks(title="Terrain Generator") as demo:
             perlin_lacunarity = gr.Number(label="perlin_lacunarity", value=_PERLIN_DEFAULTS["lacunarity"])
         perlin_preview0, perlin_status0 = perlin_hm_preview(**_PERLIN_DEFAULTS)
         perlin_hm_image = gr.Image(type="numpy", label="heightmap preview", value=perlin_preview0, height=360)
-        perlin_hm_status = gr.Textbox(label="状态", value=perlin_status0, lines=1)
+        perlin_hm_status = gr.Textbox(label="Status", value=perlin_status0, lines=1)
 
     gr.Markdown("template: terrain_config.yaml")
     with gr.Row():
@@ -660,8 +660,8 @@ with gr.Blocks(title="Terrain Generator") as demo:
         interactive=True,
     )
 
-    btn = gr.Button("生成", variant="primary")
-    status = gr.Textbox(label="状态", lines=5)
+    btn = gr.Button("Generate", variant="primary")
+    status = gr.Textbox(label="Status", lines=5)
     with gr.Row():
         preview_blended = gr.Image(label="texture", height=360)
         preview_layers = gr.Image(label="layers", height=360)

@@ -16,8 +16,16 @@ to these two directories (git-ignored).
 
 ## Rock assets
 
-The rock USD library (`models/rocks/`, ~0.6 GB for `mars_rocks`, used by scenes with
-`rock_k > 0`) is not stored in this repository. Place a rock library under
-`models/rocks/<name>` (see configs, e.g. `mars_rocks`) before generating scenes with
-rocks, or set `rock_k: 0.0` for rock-free scenes. `textures/` and `heightmaps/` ARE
-included, so Perlin scenes with texture quilting work out of the box.
+The rock USD library (`models/rocks/mars_rocks/`, ~0.6 GB, used by scenes with
+`rock_k > 0`) is distributed as a GitHub Release asset: download `mars_rocks.zip`
+from the [Releases page](https://github.com/chengsn1234/PhysPlanet/releases) and unzip
+it so that `models/rocks/mars_rocks/` exists. Rock-free scenes can set `rock_k: 0.0`.
+`textures/` and `heightmaps/` ARE included, so Perlin scenes with texture quilting
+work out of the box.
+
+## HiRISE DTM
+
+The DTM index (`models/HiRISE/HiRISE_DTM_train_dataset.csv`, 895 entries) is included,
+so the HiRISE tab lists and filters DTMs out of the box. The downloaded raster files
+(`models/HiRISE/data/*.IMG` and ortho JP2s, ~0.4 GB each) are fetched on demand when a
+DTM is loaded and are git-ignored.

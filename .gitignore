@@ -15,7 +15,7 @@ runs/
 
 # terrain generator outputs (regenerate via terrain_generation/scripts)
 source/physplanet_assets/terrain_generation/models/rocks/
-source/physplanet_assets/terrain_generation/models/HiRISE/
+source/physplanet_assets/terrain_generation/models/HiRISE/data/
 source/physplanet_assets/terrain_generation/terrain/
 
 # editors / local

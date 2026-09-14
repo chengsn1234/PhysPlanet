@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-"""Sim Launcher WebUI — 仿真配置 + ROS2 配置 + 一键启动。
+"""Sim Launcher WebUI — simulation config + ROS 2 config + one-click launch.
 
-运行环境：isaac-sim python（和地形生成 webui 同环境）
+Run with the isaac-sim python (same environment as the terrain generation webui):
     ~/IsaacLab/isaaclab.sh -p source/physplanet_assets/test/sim_webui.py
-浏览器访问 localhost:7861
+open http://localhost:7861 in a browser.
 """
 
 import os
@@ -48,10 +48,10 @@ _CONDA_SH = os.path.expanduser("~/anaconda3/etc/profile.d/conda.sh")
 
 # 车型 → test 脚本映射
 _SCRIPT_MAP = {
-    ("Hunter", "硬地 PhysX"):        "03_test_hunter_mars_terrain.py",
-    ("Zhurong", "硬地 PhysX"):       "04_test_zhurong_mars_terrain.py",
-    ("Hunter", "软地 Bekker-Wong"):  "05_test_hunter_terramechanics.py",
-    ("Zhurong", "软地 Bekker-Wong"): "06_test_zhurong_terramechanics.py",
+    ("Hunter", "Hard-ground (PhysX)"):        "03_test_hunter_mars_terrain.py",
+    ("Zhurong", "Hard-ground (PhysX)"):       "04_test_zhurong_mars_terrain.py",
+    ("Hunter", "Soft soil (Bekker\u2013Wong)"):  "05_test_hunter_terramechanics.py",
+    ("Zhurong", "Soft soil (Bekker\u2013Wong)"): "06_test_zhurong_terramechanics.py",
 }
 _CONFIG_MAP = {"Hunter": "hunter_config.yaml", "Zhurong": "zhurong_config.yaml"}
 
@@ -221,7 +221,7 @@ def save_sim_config(robot, physics, terrain, num_envs, env_spacing, headless, en
     cfg["debug"] = bool(debug)
     _dump_yaml_preserve(path, cfg)
     script = _SCRIPT_MAP[(robot, physics)]
-    return f"✅ 已保存 {path}\n   script={script}\n   terrain={terrain}  num_envs={num_envs}"
+    return f"✅ Saved {path}\n   script={script}\n   terrain={terrain}  num_envs={num_envs}"
 
 
 def start_sim(robot, physics, terrain, num_envs, env_spacing, headless, enable_cameras, pub_freq, features_cb, debug):
@@ -230,7 +230,7 @@ def start_sim(robot, physics, terrain, num_envs, env_spacing, headless, enable_c
     global _sim_proc
     with _proc_lock:
         if _sim_proc is not None and _sim_proc.poll() is None:
-            return _logs_to_text(_sim_logs), "⚠️ 仿真已在运行，先停止"
+            return _logs_to_text(_sim_logs), "⚠️ Simulation already running — stop it first"
 
     # 边界检查：GridCloner 是 2D 网格排列（ceil(sqrt(N)) × ceil(sqrt(N))）
     # 所有 env 必须在 terrain 范围内：grid_side × spacing ≤ terrain_size
@@ -244,9 +244,9 @@ def start_sim(robot, physics, terrain, num_envs, env_spacing, headless, enable_c
         if total_span > terrain_size:
             max_grid_side = int(terrain_size // env_spacing)
             max_envs = max_grid_side * max_grid_side
-            return ("", f"❌ {num_envs} envs 排成 {grid_side}×{grid_side} 网格，"
-                    f"跨度 {total_span:.0f}m > 地形 {terrain_size}m。"
-                    f"env_spacing={env_spacing}m 时最多 {max_envs} envs")
+            return ("", f"❌ {num_envs} envs form a {grid_side}x{grid_side} grid; "
+                    f"span {total_span:.0f} m > terrain size {terrain_size} m."
+                    f"with env_spacing={env_spacing} m at most {max_envs} envs fit")
 
     # 先把 UI 当前状态写入 YAML，确保子进程读到的就是用户选的
     save_sim_config(robot, physics, terrain, num_envs, env_spacing, headless, enable_cameras, pub_freq, features_cb, debug)
@@ -270,14 +270,14 @@ def start_sim(robot, physics, terrain, num_envs, env_spacing, headless, enable_c
             env=_clean_env(),
         )
     except Exception as exc:
-        _sim_logs.append(f"❌ 启动失败: {exc}")
-        return _logs_to_text(_sim_logs), f"❌ 启动失败: {exc}"
+        _sim_logs.append(f"❌ Failed to start: {exc}")
+        return _logs_to_text(_sim_logs), f"❌ Failed to start: {exc}"
 
     stop_event = threading.Event()
     t = threading.Thread(target=_stream_stdout, args=(_sim_proc, _sim_logs, stop_event), daemon=True)
     t.start()
     _wait_first_output(_sim_logs)
-    return _logs_to_text(_sim_logs), "🚀 仿真启动中…"
+    return _logs_to_text(_sim_logs), "🚀 Starting simulation…"
 
 
 def stop_sim():
@@ -285,11 +285,11 @@ def stop_sim():
     global _sim_proc
     with _proc_lock:
         if _sim_proc is None or _sim_proc.poll() is not None:
-            return _logs_to_text(_sim_logs), "（仿真未在运行）"
+            return _logs_to_text(_sim_logs), "(simulation not running)"
         _kill_proc(_sim_proc)
-        _sim_logs.append("[停止] 仿真进程已终止")
+        _sim_logs.append("[stop] simulation process terminated")
         _sim_proc = None
-    return _logs_to_text(_sim_logs), "⏹ 已停止仿真"
+    return _logs_to_text(_sim_logs), "⏹ Simulation stopped"
 
 
 def poll_sim_log():
@@ -310,7 +310,7 @@ def save_ros2_config(ros2_features_cb, gt_cb, env_id):
         },
     }
     _dump_yaml_preserve(_ROS2_CONFIG_PATH, cfg)
-    return f"✅ 已保存 {_ROS2_CONFIG_PATH}\n   env_id={int(env_id)}"
+    return f"✅ Saved {_ROS2_CONFIG_PATH}\n   env_id={int(env_id)}"
 
 
 def start_ros2(robot, env_id, ros2_features_cb, gt_cb):
@@ -318,7 +318,7 @@ def start_ros2(robot, env_id, ros2_features_cb, gt_cb):
     global _ros2_proc
     with _proc_lock:
         if _ros2_proc is not None and _ros2_proc.poll() is None:
-            return _logs_to_text(_ros2_logs), "⚠️ ROS2 已在运行，先停止"
+            return _logs_to_text(_ros2_logs), "⚠️ ROS 2 already running — stop it first"
     # 先保存 UI 状态到 YAML
     save_ros2_config(ros2_features_cb, gt_cb, env_id)
     launch_file = f"{robot.lower()}_elevation_mapping.launch.py"
@@ -339,14 +339,14 @@ def start_ros2(robot, env_id, ros2_features_cb, gt_cb):
             env=_clean_env(),
         )
     except Exception as exc:
-        _ros2_logs.append(f"❌ 启动失败: {exc}")
-        return _logs_to_text(_ros2_logs), f"❌ 启动失败: {exc}"
+        _ros2_logs.append(f"❌ Failed to start: {exc}")
+        return _logs_to_text(_ros2_logs), f"❌ Failed to start: {exc}"
 
     stop_event = threading.Event()
     t = threading.Thread(target=_stream_stdout, args=(_ros2_proc, _ros2_logs, stop_event), daemon=True)
     t.start()
     _wait_first_output(_ros2_logs)
-    return _logs_to_text(_ros2_logs), "🚀 ROS2 启动中…"
+    return _logs_to_text(_ros2_logs), "🚀 Starting ROS 2…"
 
 
 def stop_ros2():
@@ -354,11 +354,11 @@ def stop_ros2():
     global _ros2_proc
     with _proc_lock:
         if _ros2_proc is None or _ros2_proc.poll() is not None:
-            return _logs_to_text(_ros2_logs), "（ROS2 未在运行）"
+            return _logs_to_text(_ros2_logs), "(ROS 2 not running)"
         _kill_proc(_ros2_proc)
-        _ros2_logs.append("[停止] ROS2 进程已终止")
+        _ros2_logs.append("[stop] ROS 2 process terminated")
         _ros2_proc = None
-    return _logs_to_text(_ros2_logs), "⏹ 已停止 ROS2"
+    return _logs_to_text(_ros2_logs), "⏹ ROS 2 stopped"
 
 
 def poll_ros2_log():
@@ -374,7 +374,7 @@ def _initial_sim_values():
     feats = cfg.get("features", {})
     return (
         "Hunter",                                                               # [0] robot
-        "软地 Bekker-Wong",                                                      # [1] physics
+        "Soft soil (Bekker\u2013Wong)",                                           # [1] physics
         cfg.get("terrain", {}).get("name", "terrain_2"),                         # [2] terrain
         sim.get("num_envs", 1),                                                  # [3] num_envs
         sim.get("env_spacing", 30.0),                                            # [4] env_spacing
@@ -423,7 +423,7 @@ def _on_robot_change(robot):
 
 # ---- UI 构建 -----------------------------------------------------------------
 with gr.Blocks(title="PhysPlanet Sim Launcher") as demo:
-    gr.Markdown("# PhysPlanet 仿真配置 & 启动")
+    gr.Markdown("# PhysPlanet Simulation Configuration & Launcher")
 
     sv = _initial_sim_values()
     rv = _initial_ros2_values()
@@ -431,11 +431,11 @@ with gr.Blocks(title="PhysPlanet Sim Launcher") as demo:
     with gr.Row():
         # ===== 左栏：仿真侧 =====
         with gr.Column():
-            gr.Markdown("## 仿真侧")
-            sim_robot = gr.Radio(choices=["Hunter", "Zhurong"], value=sv[0], label="车型")
+            gr.Markdown("## Simulation")
+            sim_robot = gr.Radio(choices=["Hunter", "Zhurong"], value=sv[0], label="Robot")
             sim_physics = gr.Radio(
-                choices=["硬地 PhysX", "软地 Bekker-Wong"], value=sv[1], label="物理模型")
-            sim_terrain = gr.Dropdown(choices=_scan_terrains(), value=sv[2], label="地形")
+                choices=["Hard-ground (PhysX)", "Soft soil (Bekker\u2013Wong)"], value=sv[1], label="Physics model")
+            sim_terrain = gr.Dropdown(choices=_scan_terrains(), value=sv[2], label="Terrain")
             with gr.Row():
                 sim_num_envs = gr.Number(value=sv[3], label="num_envs", precision=0)
                 sim_env_spacing = gr.Number(value=sv[4], label="env_spacing (m)", precision=1)
@@ -447,31 +447,31 @@ with gr.Blocks(title="PhysPlanet Sim Launcher") as demo:
             sim_features = gr.CheckboxGroup(
                 choices=["height_scan", "height_scan_raycast", "gt_publish", "gt_image", "wheel_sensor"],
                 value=sv[8],
-                label="功能开关")
+                label="Features")
             with gr.Row():
-                sim_save_btn = gr.Button("保存仿真配置")
-                sim_start_btn = gr.Button("启动仿真", variant="primary")
-                sim_stop_btn = gr.Button("停止仿真", variant="stop")
-            sim_status = gr.Textbox(label="状态", lines=1)
-            sim_log = gr.Textbox(label="仿真日志", lines=12, max_lines=30, interactive=False)
+                sim_save_btn = gr.Button("Save simulation config")
+                sim_start_btn = gr.Button("Start simulation", variant="primary")
+                sim_stop_btn = gr.Button("Stop simulation", variant="stop")
+            sim_status = gr.Textbox(label="Status", lines=1)
+            sim_log = gr.Textbox(label="Simulation log", lines=12, max_lines=30, interactive=False)
 
         # ===== 右栏：ROS2 侧 =====
         with gr.Column():
-            gr.Markdown("## ROS2 侧")
-            gr.Markdown("⚠️ 需先启动仿真（仿真写 `active_terrain.json`），再启动 ROS2")
+            gr.Markdown("## ROS 2")
+            gr.Markdown("⚠️ Start the simulation first (it writes `active_terrain.json`), then launch ROS 2")
             ros2_env_id = gr.Number(value=rv[2], label="env_id", precision=0)
             ros2_features = gr.CheckboxGroup(
                 choices=["elevation_mapping", "friction_identifier", "rviz"],
-                value=rv[0], label="功能开关")
+                value=rv[0], label="Features")
             ros2_gt = gr.CheckboxGroup(
                 choices=["friction_gt", "soil_params", "terrain_class", "rock_gt"],
-                value=rv[1], label="GT 层加载")
+                value=rv[1], label="Ground-truth layers")
             with gr.Row():
-                ros2_save_btn = gr.Button("保存 ROS2 配置")
-                ros2_start_btn = gr.Button("启动 ROS2", variant="primary")
-                ros2_stop_btn = gr.Button("停止 ROS2", variant="stop")
-            ros2_status = gr.Textbox(label="状态", lines=1)
-            ros2_log = gr.Textbox(label="ROS2 日志", lines=12, max_lines=30, interactive=False)
+                ros2_save_btn = gr.Button("Save ROS 2 config")
+                ros2_start_btn = gr.Button("Start ROS 2", variant="primary")
+                ros2_stop_btn = gr.Button("Stop ROS 2", variant="stop")
+            ros2_status = gr.Textbox(label="Status", lines=1)
+            ros2_log = gr.Textbox(label="ROS 2 log", lines=12, max_lines=30, interactive=False)
 
     # ===== 事件绑定 =====
     sim_robot.change(

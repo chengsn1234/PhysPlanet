@@ -7,8 +7,8 @@ under their respective licenses and terms.
 | Component | Use in PhysPlanet | Notes |
 | --- | --- | --- |
 | Isaac Sim / Isaac Lab | Simulation runtime and extension framework | Install and use under NVIDIA's applicable terms. |
-| Isaac Lab extension templates | Package layout and selected training entry-point structure | Files retaining the `BSD-3-Clause` header remain under the Isaac Lab license; see [`LICENSES/BSD-3-Clause-IsaacLab.txt`](LICENSES/BSD-3-Clause-IsaacLab.txt). |
-| [RLRoverLab](https://github.com/abmoRobotics/RLRoverLab) | Reference implementation for selected navigation observations, rewards, and terminations | Adapted files retain an `Apache-2.0` header; see [`LICENSES/Apache-2.0.txt`](LICENSES/Apache-2.0.txt). |
+| Isaac Lab extension templates | Package layout and selected training entry-point structure | Files retaining the `BSD-3-Clause` header remain under the Isaac Lab license; see the BSD-3-Clause headers retained in the adapted files. |
+| [RLRoverLab](https://github.com/abmoRobotics/RLRoverLab) | Reference implementation for selected navigation observations, rewards, and terminations | Adapted files retain an `Apache-2.0` header; see the Apache-2.0 headers retained in the adapted files. |
 | [MarsSim](https://github.com/WMR-team/MarsSim) | Source lineage for the vectorized terramechanics model and rock-distribution implementation | The upstream repository does not currently declare a repository-wide source-code license. Confirm and record redistribution permission for code-derived portions before a public release; cite [Zhou et al. (2023)](https://doi.org/10.1109/TAES.2022.3207705). |
 | [skrl](https://github.com/Toni-SM/skrl) / [Gymnasium](https://github.com/Farama-Foundation/Gymnasium) | Reinforcement-learning algorithms and environment API | Installed separately; see the upstream project licenses. |
 | ROS 2 Humble | Robot middleware | See the ROS 2 distribution licenses. |
