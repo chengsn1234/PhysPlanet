@@ -9,7 +9,7 @@ Mars rover, and ships a geometry / +semantic / +physics observation-ablation bas
 
 > This project is under active development; interfaces and features may change.
 
-![Zhurong in a lunar scene](docs/pictures/zhurong_lunar.png)
+![Zhurong in a lunar scene](docs/pictures/zhurong_mars.png)
 
 ## Requirements
 
