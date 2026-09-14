@@ -1,0 +1,54 @@
+# Controlled terrain for wheel-terrain response experiments.
+#
+# HM99 provides four long x-aligned bands. The total relief is kept below
+# 0.1 mm and every band uses the same texture and semantic label, so the
+# controlled variable is the configured wheel-terrain property field.
+
+terrain_name: "experiments/response_validation"
+sky: mars
+
+hm: 99
+terrain_size: 24.0
+terrain_height: 0.0001
+terrain_downsample: 4
+gt_resolution: 0.05
+
+rock_k: 0.0
+rock_seed: 42
+rock_sizes: []
+rock_downsample: 32
+
+# These values span the model response and are not claimed as calibrated
+# measurements. Replace them with measured values in the final validation.
+texture_layers:
+  - name: "condition_a"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.95, n1: 0.0, c: 462.3, phi: 0.25, K: 0.014}
+  - name: "condition_b"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.85, n1: 0.0, c: 462.3, phi: 0.45, K: 0.014}
+  - name: "condition_c"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.75, n1: 0.0, c: 462.3, phi: 0.65, K: 0.014}
+  - name: "condition_d"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.65, n1: 0.0, c: 462.3, phi: 0.85, K: 0.014}
+
+texture_resolution: 0.05
+

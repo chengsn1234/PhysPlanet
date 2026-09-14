@@ -1,0 +1,34 @@
+/elevation_mapping_node:
+  ros__parameters:
+    #### Plugins ########
+    plugin_config_file: '$(ros2 pkg prefix elevation_mapping_cupy)/share/elevation_mapping_cupy/config/setups/zhurong/plugin_config.yaml'
+
+  pointcloud_channel_fusions:
+    none: 'none'
+
+  image_channel_fusions:
+    rgb: 'color'
+    default: 'exponential'
+    feat_.*: 'exponential'
+
+  #### Subscribers ########
+  subscribers:
+    rgb_cam:
+      topic_name: '/env_0/zhurong_camera_rgb'
+      camera_info_topic_name: '/env_0/zhurong_camera_info'
+      data_type: image
+    depth_cam:
+      topic_name: '/env_0/zhurong_camera_depth'
+      camera_info_topic_name: '/env_0/zhurong_camera_info'
+      data_type: image
+
+  #### Publishers ########
+  publishers:
+    elevation_map_raw:
+      layers: ['elevation', 'traversability', 'variance', 'rgb']
+      basic_layers: ['elevation']
+      fps: 5.0
+    elevation_map_filter:
+      layers: ['min_filter', 'smooth', 'inpaint', 'elevation', 'rgb']
+      basic_layers: ['min_filter']
+      fps: 3.0

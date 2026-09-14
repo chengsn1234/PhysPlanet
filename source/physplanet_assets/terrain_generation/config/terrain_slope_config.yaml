@@ -1,0 +1,50 @@
+# W1 上坡实测用：粗糙 HM11 + 中等起伏（有坡、不至于完全不可测）。
+# 独立于 terrain_config.yaml（平地 W1 测试保留不动）。
+terrain_name: "terrain_slope"
+sky: mars
+
+hm: 11
+heightmap_dir: ""
+
+terrain_size: 100.0
+terrain_height: 3.0         # 中等起伏：平均 3% 坡，HM11 局部坡更陡，足够暴露 W1 斜坡问题
+terrain_downsample: 2
+gt_resolution: 0.1
+
+rock_k: 0.07
+rock_seed: 42
+rock_sizes: [0.4, 0.8, 1.6, 3.2, 6.4]
+rock_downsample: 16
+
+texture_layers:
+  - name: "layer_1"
+    path: "textures/mars/1.jpg"
+    static_friction: 0.05
+    dynamic_friction: 0.03
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.92, n1: 0.5, c: 462.3, phi: 0.35, K: 0.014}
+  - name: "layer_2"
+    path: "textures/mars/2.jpg"
+    static_friction: 0.3
+    dynamic_friction: 0.2
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.85, n1: 0.45, c: 462.3, phi: 0.50, K: 0.014}
+  - name: "layer_3"
+    path: "textures/mars/3.jpg"
+    static_friction: 2.0
+    dynamic_friction: 1.5
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.78, n1: 0.4, c: 462.3, phi: 0.61, K: 0.014}
+  - name: "layer_4"
+    path: "textures/mars/4.jpg"
+    static_friction: 8.0
+    dynamic_friction: 6.0
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.70, n1: 0.35, c: 462.3, phi: 0.72, K: 0.014}
+  - name: "layer_5"
+    path: "textures/mars/5.jpg"
+    static_friction: 8.0
+    dynamic_friction: 6.0
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.65, n1: 0.3, c: 462.3, phi: 0.85, K: 0.014}
+texture_resolution: 0.05

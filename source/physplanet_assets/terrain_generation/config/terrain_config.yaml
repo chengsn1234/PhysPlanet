@@ -1,0 +1,58 @@
+# Mars terrain generation configuration
+# CLI args override these defaults
+
+terrain_name: "example_terrain"
+sky: mars
+
+# Heightmap
+hm: 11                    # Heightmap number (HM1-HM34)
+heightmap_dir: ""         # Override heightmap directory (default: terrain_generation/models/heightmaps/)
+
+# Terrain geometry
+terrain_size: 100.0        # Terrain size in meters (square)
+terrain_height: 0.01       # Max terrain height in meters (近平原，W1 轮地力学平地测试用)
+terrain_downsample: 2      # Heightmap grid downsample factor; 2 ~= 20 万 terrain 三角面
+gt_resolution: 0.1         # GT npy 栅格分辨率（m），独立于物理 mesh
+
+# Rock distribution
+rock_k: 0.0              # 无岩石（W1 平地测试）
+rock_seed: 42             # Random seed for rock placement
+rock_sizes: [0.4, 0.8, 1.6, 3.2, 6.4]           # Rock diameter buckets (meters)
+rock_downsample: 16       # Rock triangle reduction factor; 329 万面 / 32 ~= 10 万面
+
+# Terrain texture: 5 张贴图按 heightmap 高度分层混合烘焙
+# 从低到高依次对应 layer_1/layer_2/layer_3/layer_4/layer_5。
+# 每层同时配置自己的 physics material，视觉层和摩擦层一一对应。
+texture_layers:
+  - name: "layer_1"
+    path: "textures/mars/1.jpg"
+    static_friction: 0.05
+    dynamic_friction: 0.03
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.95, n1: 0.5, c: 462.3, phi: 0.25, K: 0.014}
+  - name: "layer_2"
+    path: "textures/mars/2.jpg"
+    static_friction: 0.3
+    dynamic_friction: 0.2
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.87, n1: 0.45, c: 462.3, phi: 0.45, K: 0.014}
+  - name: "layer_3"
+    path: "textures/mars/3.jpg"
+    static_friction: 2.0
+    dynamic_friction: 1.5
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.80, n1: 0.4, c: 462.3, phi: 0.61, K: 0.014}
+  - name: "layer_4"
+    path: "textures/mars/4.jpg"
+    static_friction: 8.0
+    dynamic_friction: 6.0
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.72, n1: 0.35, c: 462.3, phi: 0.80, K: 0.014}
+  - name: "layer_5"
+    path: "textures/mars/5.jpg"
+    static_friction: 8.0
+    dynamic_friction: 6.0
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.65, n1: 0.3, c: 462.3, phi: 1.00, K: 0.014}
+texture_resolution: 0.01     # 最终贴图分辨率（m/px）：100m 地形对应 10000px
+texture_quilting: true    # true: 高清局部纹理无规则拼接；false: 原有整图拉伸

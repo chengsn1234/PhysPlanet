@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot name="wh12_testbed">
+  <link name="carriage">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="3.1549"/>
+      <inertia ixx="0.05" iyy="0.05" izz="0.05" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.12" rpy="0 0 0"/>
+      <geometry><box size="0.10 0.10 0.24"/></geometry>
+      <material name="grey"><color rgba="0.6 0.6 0.65 1"/></material>
+    </visual>
+  </link>
+  <link name="wheel">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="5.0000"/>
+      <inertia ixx="0.022823" iyy="0.045563" izz="0.022823" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5707963 0 0"/>
+      <geometry><cylinder radius="0.135" length="0.165"/></geometry>
+      <material name="dark"><color rgba="0.25 0.25 0.28 1"/></material>
+    </visual>
+  </link>
+  <joint name="wheel_joint" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="carriage"/>
+    <child link="wheel"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="100000" velocity="1000" lower="-1000000" upper="1000000"/>
+    <dynamics damping="0" friction="0"/>
+  </joint>
+</robot>

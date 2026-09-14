@@ -1,0 +1,27 @@
+[package]
+
+# Semantic Versioning is used: https://semver.org/
+version = "0.1.0"
+
+# Description
+category = "isaaclab"
+readme  = "README.md"
+
+title = "PhysPlanet RL"
+author = "PhysPlanet Contributors"
+maintainer = "PhysPlanet Contributors"
+description = "skrl training and playback entry points for PhysPlanet tasks"
+repository = "https://github.com/chengsn1234/PhysPlanet"
+keywords = ["extension", "isaaclab", "planetary-rover", "reinforcement-learning"]
+
+[dependencies]
+"isaaclab" = {}
+"isaaclab_rl" = {}
+"isaaclab_tasks" = {}
+"physplanet_tasks" = {}
+
+[[python.module]]
+name = "physplanet_rl"
+
+[isaaclab_settings]
+# No extension-managed apt or ROS workspace dependencies.

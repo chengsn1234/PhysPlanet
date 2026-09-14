@@ -1,0 +1,50 @@
+# Controlled wheel-terrain response experiment with response-balanced
+# intermediate values. All bands share appearance, semantic label, rigid
+# friction and geometry; the intermediate n0/phi values are chosen from the
+# bounded literature interval to make the measured response more evenly spaced.
+
+terrain_name: "experiments/response_validation_literature_balanced"
+sky: mars
+
+hm: 99
+terrain_size: 24.0
+terrain_height: 0.0001
+terrain_downsample: 4
+gt_resolution: 0.05
+
+rock_k: 0.0
+rock_seed: 42
+rock_sizes: []
+rock_downsample: 32
+
+texture_layers:
+  - name: "n067_phi30"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.67, n1: 0.0, c: 462.3, phi: 0.5235987756, K: 0.014}
+  - name: "n0775_phi325"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.775, n1: 0.0, c: 462.3, phi: 0.5672320069, K: 0.014}
+  - name: "n0855_phi345"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.855, n1: 0.0, c: 462.3, phi: 0.6021385919, K: 0.014}
+  - name: "n092_phi37"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.92, n1: 0.0, c: 462.3, phi: 0.6457718232, K: 0.014}
+
+texture_resolution: 0.05

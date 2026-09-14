@@ -1,0 +1,49 @@
+# Slip test terrain - small size with distinct friction zones
+# 用于验证滑转率计算的小型测试地形
+
+terrain_name: "slip_test"
+sky: mars
+
+hm: 99
+
+# Terrain geometry - 小尺寸便于快速测试
+terrain_size: 30.0        # 30m x 30m
+terrain_height: 0.05      # 平坦地形，高度变化小
+terrain_downsample: 4     # 减少面数
+gt_resolution: 0.1        # GT npy 独立高分辨率
+
+# Rock distribution - 不放岩石
+rock_k: 0.0
+rock_seed: 42
+rock_sizes: []
+rock_downsample: 32
+
+# 4个摩擦区域：低摩擦(沙地) -> 中摩擦(硬地) -> 高摩擦(岩石) -> 极高摩擦
+# 按高度分层，从低到高
+texture_layers:
+  - name: "low_friction"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.05
+    dynamic_friction: 0.03
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.95, n1: 0.5, c: 462.3, phi: 0.25, K: 0.014}
+  - name: "medium_friction"
+    path: "textures/mars/1.jpg"
+    static_friction: 0.5
+    dynamic_friction: 0.4
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.85, n1: 0.45, c: 462.3, phi: 0.50, K: 0.014}
+  - name: "high_friction"
+    path: "textures/mars/2.jpg"
+    static_friction: 2.0
+    dynamic_friction: 1.5
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.75, n1: 0.4, c: 462.3, phi: 0.80, K: 0.014}
+  - name: "very_high_friction"
+    path: "textures/mars/3.jpg"
+    static_friction: 8.0
+    dynamic_friction: 6.0
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.65, n1: 0.3, c: 462.3, phi: 1.00, K: 0.014}
+
+texture_resolution: 0.05       # 30m 地形对应 600px

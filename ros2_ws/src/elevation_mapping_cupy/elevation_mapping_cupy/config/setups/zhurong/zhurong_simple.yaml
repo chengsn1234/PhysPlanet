@@ -1,0 +1,27 @@
+elevation_mapping_node:
+  ros__parameters:
+    base_frame: 'env_0/base_link'
+    plugin_config_file: 'config/setups/zhurong/plugin_config.yaml'
+
+    resolution: 0.1
+    map_length: 20.0
+
+    pointcloud_channel_fusions:
+      default: 'average'
+
+    image_channel_fusions:
+      default: 'exponential'
+
+    subscribers:
+      nav_cam:
+        topic_name: '/env_0/zhurong_camera_nav_points'
+        data_type: pointcloud
+      obsf_cam:
+        topic_name: '/env_0/zhurong_obsf_camera_points'
+        data_type: pointcloud
+
+    publishers:
+      elevation_map_raw:
+        layers: ['inpaint', 'elevation', 'traversability', 'variance', 'friction_GT']
+        basic_layers: ['inpaint']
+        fps: 5.0

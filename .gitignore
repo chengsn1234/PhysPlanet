@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Isaac Lab / simulation outputs
+logs/
+outputs/
+runs/
+*.h5
+*.pt
+*.pth
+
+# terrain generator outputs (regenerate via terrain_generation/scripts)
+source/physplanet_assets/terrain_generation/models/rocks/
+source/physplanet_assets/terrain_generation/models/HiRISE/
+source/physplanet_assets/terrain_generation/terrain/
+
+# editors / local
+.vscode/
+.idea/
+.zcode/
+.claude/
+
+# ROS 2 colcon artifacts
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/

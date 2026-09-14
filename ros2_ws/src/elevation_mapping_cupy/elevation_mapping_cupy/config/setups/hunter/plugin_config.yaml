@@ -1,0 +1,34 @@
+min_filter:
+  enable: True
+  fill_nan: False
+  is_height_layer: True
+  layer_name: "min_filter"
+  extra_params:
+    dilation_size: 1
+    iteration_n: 30
+
+smooth_filter:
+  enable: True
+  fill_nan: False
+  is_height_layer: True
+  layer_name: "smooth"
+  extra_params:
+    input_layer_name: "min_filter"
+
+inpainting:
+  enable: True
+  fill_nan: False
+  is_height_layer: True
+  layer_name: "inpaint"
+  extra_params:
+    method: "telea"
+
+frictionGT_layer:
+  enable: True
+  fill_nan: False
+  is_height_layer: False
+  layer_name: "friction_GT"
+  extra_params:
+    terrain: "terrain2"
+    terrain_size: 100.0
+    map_length: 10.0

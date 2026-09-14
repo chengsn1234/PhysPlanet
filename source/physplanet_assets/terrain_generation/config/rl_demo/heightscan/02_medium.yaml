@@ -1,0 +1,53 @@
+terrain_name: "rl_demo/heightscan/02_medium"
+sky: lunar
+navigation:
+  target_distance_range: [5.0, 20.0]
+  scenario_weights: [0.35, 0.40, 0.25]
+
+heightmap_source: perlin
+perlin_resolution: 512
+perlin_seed: 22
+perlin_scale: 4.0
+perlin_octaves: 4
+perlin_persistence: 0.5
+perlin_lacunarity: 2.0
+
+terrain_size: 100.0
+terrain_height: 0.5
+terrain_downsample: 2
+gt_resolution: 0.1
+
+rock_k: 0.2
+rock_seed: 202
+rock_sizes: [1.0, 1.5]
+rock_downsample: 16
+rock_texture: "textures/lunar/moon_macro_01.png"
+
+texture_layers:
+  - name: "terrain_1"
+    path: "textures/lunar/moon_dusted_01.png"
+    static_friction: 0.8
+    dynamic_friction: 0.6
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.95, n1: 0.5, c: 462.3, phi: 0.25, K: 0.014}
+  - name: "terrain_2"
+    path: "textures/lunar/moon_dusted_03.png"
+    static_friction: 0.8
+    dynamic_friction: 0.6
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.87, n1: 0.45, c: 462.3, phi: 0.45, K: 0.014}
+  - name: "terrain_3"
+    path: "textures/lunar/moon_03.png"
+    static_friction: 0.8
+    dynamic_friction: 0.6
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.80, n1: 0.4, c: 462.3, phi: 0.61, K: 0.014}
+  - name: "terrain_4"
+    path: "textures/lunar/moon_meteor_01.png"
+    static_friction: 0.8
+    dynamic_friction: 0.6
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.72, n1: 0.35, c: 462.3, phi: 0.80, K: 0.014}
+
+texture_resolution: 0.01
+texture_quilting: true

@@ -1,0 +1,51 @@
+# Controlled wheel-terrain response experiment with a monotonic physical-field
+# gradient. All bands share appearance, semantic label, rigid friction and
+# geometry; n0 and phi increase together across the four bands.
+
+terrain_name: "experiments/response_validation_literature_gradient"
+sky: mars
+
+hm: 99
+terrain_size: 24.0
+terrain_height: 0.0001
+terrain_downsample: 4
+gt_resolution: 0.05
+
+rock_k: 0.0
+rock_seed: 42
+rock_sizes: []
+rock_downsample: 32
+
+# Four contiguous x-aligned bands. The values remain within the literature
+# ranges used in the controlled experiment and increase from R1 to R4.
+texture_layers:
+  - name: "n067_phi30"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.67, n1: 0.0, c: 462.3, phi: 0.5235987756, K: 0.014}
+  - name: "n076_phi32"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.76, n1: 0.0, c: 462.3, phi: 0.5585053606, K: 0.014}
+  - name: "n085_phi35"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.85, n1: 0.0, c: 462.3, phi: 0.6108652382, K: 0.014}
+  - name: "n092_phi37"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.92, n1: 0.0, c: 462.3, phi: 0.6457718232, K: 0.014}
+
+texture_resolution: 0.05

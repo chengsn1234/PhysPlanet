@@ -1,0 +1,55 @@
+# Controlled wheel-terrain response experiment with literature-bounded values.
+#
+# All four bands have the same appearance, semantic label, rigid friction,
+# geometry, and fixed soil parameters. Only n0 and phi vary. The adjacent
+# bands follow a Gray-code order so that each transition changes one parameter:
+# R1 -> R2 changes phi, R2 -> R3 changes n0, and R3 -> R4 changes phi.
+
+terrain_name: "experiments/response_validation_literature_graycode"
+sky: mars
+
+hm: 99
+terrain_size: 24.0
+terrain_height: 0.0001
+terrain_downsample: 4
+gt_resolution: 0.05
+
+rock_k: 0.0
+rock_seed: 42
+rock_sizes: []
+rock_downsample: 32
+
+# The four rows map to four contiguous x-aligned bands of the nearly flat
+# HM99 terrain. Gray-code order: (n0, phi) = (0.67,30), (0.67,37),
+# (0.92,37), (0.92,30) degrees.
+texture_layers:
+  - name: "n067_phi30"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.67, n1: 0.0, c: 462.3, phi: 0.5235987756, K: 0.014}
+  - name: "n067_phi37"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.67, n1: 0.0, c: 462.3, phi: 0.6457718232, K: 0.014}
+  - name: "n092_phi37"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.92, n1: 0.0, c: 462.3, phi: 0.6457718232, K: 0.014}
+  - name: "n092_phi30"
+    semantic_label: "soil"
+    path: "textures/mars/4.jpg"
+    static_friction: 0.8
+    dynamic_friction: 0.7
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.92, n1: 0.0, c: 462.3, phi: 0.5235987756, K: 0.014}
+
+texture_resolution: 0.05

@@ -1,0 +1,45 @@
+# 祝融号火星场景配置
+# CLI 参数可覆盖此处默认值
+
+terrain:
+  name: "mars_rock"
+  size: 100.0            # 地形总尺寸（m），需和 terrain_config.yaml 对齐
+
+sim:
+  num_envs: 1
+  env_spacing: 5.0
+  dt: 0.01
+  gravity: 3.72          # 火星重力 (m/s²)，月球=1.62，地球=9.81
+  headless: false
+  rendering: true
+  rendering_kit: isaaclab.python.rendering.kit
+  enable_cameras: false
+  pub_freq: 10           # ROS 仿真数据发布频率（Hz）
+
+spawn:
+  offset_x:              # null=地形中心；可填具体 X
+  offset_y:              # null=地形中心；可填具体 Y
+  height: 15.0           # spawn 初始悬空高度（m），自由落体到地面
+  ground_clearance: 0.3  # raycaster 测到地面后的安全抬高（m）
+
+sim_data:
+  size:                # height_scan 覆盖范围（m）
+    - 10.0
+    - 10.0
+  resolution: 0.05     # height_scan 网格分辨率（m/cell）
+  contact_sensor:        # 接触力传感器
+    enabled: true
+    force_threshold: 0.1
+gt_scan:                  # GT patch 配置（独立于 height_scan）
+  size:                 # GT patch 范围（m）
+    - 10.0
+    - 10.0
+  resolution: 0.1       # GT patch 分辨率（m/cell）
+debug: false
+
+features:                       # 仿真侧传感器/发布开关（缺省全开）
+  height_scan: false            # height_scan 发布
+  height_scan_raycast: false    # true=RayCaster（需 hidden_terrain），false=查表
+  gt_publish: false             # GT patch 发布
+  gt_image: false               # GT patch mono8 可视化
+  wheel_sensor: false           # 轮子 slip/force/torque/sinkage GT 发布

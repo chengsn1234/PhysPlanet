@@ -1,0 +1,74 @@
+# Copyright (c) 2022-2025, The Isaac Lab Project Developers.
+# SPDX-License-Identifier: BSD-3-Clause
+
+# HeightScan 避障导航 PPO 配置。
+# 维度由任务决定：v0 固定速度，v1-v6 速度曲率并支持倒车。
+
+seed: 42
+
+
+# Models (skrl model instantiator)
+# https://skrl.readthedocs.io/en/latest/api/utils/model_instantiators.html
+models:
+  separate: False
+  policy:  # GaussianMixin
+    class: GaussianMixin
+    clip_actions: False
+    clip_log_std: True
+    min_log_std: -5.0
+    max_log_std: 0.0
+    initial_log_std: -0.5
+    network:
+      - name: net
+        input: STATES
+        layers: [256, 160, 128]
+        activations: leaky_relu
+    output: ACTIONS
+  value:  # DeterministicMixin
+    class: DeterministicMixin
+    clip_actions: False
+    network:
+      - name: net
+        input: STATES
+        layers: [256, 160, 128]
+        activations: leaky_relu
+    output: ONE
+
+
+# Rollout memory
+memory:
+  class: RandomMemory
+  memory_size: -1  # auto (same as agent:rollouts)
+
+
+# PPO agent
+# https://skrl.readthedocs.io/en/latest/api/agents/ppo.html
+agent:
+  class: PPO
+  rollouts: 60
+  learning_epochs: 4
+  mini_batches: 24
+  discount_factor: 0.99
+  gae_lambda: 0.95
+  learning_rate: 3.0e-4
+  random_timesteps: 0
+  learning_starts: 0
+  grad_norm_clip: 0.5
+  ratio_clip: 0.2
+  value_clip: 0.2
+  entropy_loss_scale: 0.005
+  value_loss_scale: 1.0
+  kl_threshold: 0.0
+  time_limit_bootstrap: False
+  experiment:
+    directory: "zhurong_nav_heightscan"
+    experiment_name: ""
+    write_interval: auto
+    checkpoint_interval: auto
+
+
+# Sequential trainer
+trainer:
+  class: SequentialTrainer
+  timesteps: 1000000
+  environment_info: log

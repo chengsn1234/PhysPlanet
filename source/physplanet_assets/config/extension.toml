@@ -1,0 +1,29 @@
+[package]
+
+# Semantic Versioning is used: https://semver.org/
+version = "0.1.0"
+
+# Description
+category = "isaaclab"
+readme  = "README.md"
+
+title = "PhysPlanet Assets"
+author = "PhysPlanet Contributors"
+maintainer = "PhysPlanet Contributors"
+description = "Planetary rover assets, simulation utilities, and terrain generation for PhysPlanet"
+repository = "https://github.com/chengsn1234/PhysPlanet"
+keywords = ["extension", "isaaclab", "planetary-rover", "terrain"]
+
+[dependencies]
+"isaaclab" = {}
+"isaaclab_assets" = {}
+"isaaclab_mimic" = {}
+"isaaclab_rl" = {}
+"isaaclab_tasks" = {}
+# NOTE: Add additional dependencies here
+
+[[python.module]]
+name = "physplanet_assets"
+
+[isaaclab_settings]
+# No extension-managed apt or ROS workspace dependencies.

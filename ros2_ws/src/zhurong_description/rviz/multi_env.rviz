@@ -1,0 +1,76 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Reference Frame: odom
+      Plane Cell Count: 20
+      Color: 160; 160; 164
+
+    # Environment 0
+    - Class: rviz_default_plugins/RobotModel
+      Name: Robot_env_0
+      Description Topic: /robot_description_env_0
+      TF Prefix: env_0
+      Visual Enabled: true
+      Collision Enabled: false
+
+    # Environment 1
+    - rviz_default_plugins/RobotModel
+      Name: Robot_env_1
+      Description Topic: /robot_description_env_1
+      TF Prefix: env_1
+      Visual Enabled: true
+      Collision Enabled: false
+
+    # Environment 2
+    - rviz_default_plugins/RobotModel
+      Name: Robot_env_2
+      Description Topic: /robot_description_env_2
+      TF Prefix: env_2
+      Visual Enabled: true
+      Collision Enabled: false
+
+    # Environment 3
+    - rviz_default_plugins/RobotModel
+      Name: Robot_env_3
+      Description Topic: /robot_description_env_3
+      TF Prefix: env_3
+      Visual Enabled: true
+      Collision Enabled: false
+
+    # TF display
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: odom
+    Frame Rate: 30
+
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 10
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Name: Current View
+      Pitch: 0.5
+      Yaw: 0.5
+Window Geometry:
+  Displays:
+    collapsed: false
+  Width: 1200
+  Height: 800

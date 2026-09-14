@@ -1,0 +1,28 @@
+elevation_mapping_node:
+  ros__parameters:
+    base_frame: 'env_0/base_link'
+    plugin_config_file: 'config/setups/hunter/plugin_config.yaml'
+
+    resolution: 0.1
+    map_length: 10.0
+
+    pointcloud_channel_fusions:
+      default: 'average'
+
+    image_channel_fusions:
+      default: 'exponential'
+
+    subscribers:
+      depth_cam:
+        topic_name: '/env_0/camera_points'
+        data_type: pointcloud
+
+    publishers:
+      elevation_map_raw:
+        layers: ['inpaint', 'elevation', 'traversability', 'variance', 'friction_GT']
+        basic_layers: ['inpaint']
+        fps: 5.0
+      elevation_map_filter:
+        layers: ['min_filter', 'smooth', 'inpaint', 'elevation', 'friction_GT']
+        basic_layers: ['min_filter']
+        fps: 3.0

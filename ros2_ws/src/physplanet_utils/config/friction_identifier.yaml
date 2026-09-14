@@ -1,0 +1,68 @@
+env_id: 0
+slip_threshold: 0.05
+force_threshold: 0.1
+window_size: 50
+
+# 序列模式参数
+min_samples_per_step: 10
+steady_window: 50
+steady_vel_threshold: 0.01
+sample_interval: 0.2
+
+csv_path: "friction_data"
+
+# 序列模式选择（默认 fixed 不影响现有行为）
+sequence_mode: "fixed"         # "fixed" 或 "progressive"
+
+# progressive 模式参数
+progressive:
+  omega_min: 3.0
+  omega_step: 1.0
+  omega_max: 15.0
+  base_rear_omega: 3.0
+  min_samples_per_step: 10
+  max_duration: 5.0
+  safety_slip: 1.0            # 平均 |slip| > 此值停车
+
+# 质量评估参数
+quality:
+  sliding_ratio: 0.7          # valid_slip_ratio >= → "sliding"
+  partial_ratio: 0.2          # valid_slip_ratio >= → "partial_slip"，否则 "traction_only"
+  iqr_multiplier: 1.5
+  aggregate: "median"         # "median" 或 "mean"
+
+zhurong:
+  wheel_radius: 0.15
+  wheels: ["front_L", "front_R", "middle_L", "middle_R", "back_L", "back_R"]
+  front_wheels: ["front_L", "front_R"]
+  motion_steps:
+    - front_wheels: [5.0, 5.0]
+      rear_wheels: [3.0, 3.0, 3.0, 3.0]
+      max_duration: 5.0
+    - front_wheels: [7.0, 7.0]
+      rear_wheels: [3.0, 3.0, 3.0, 3.0]
+      max_duration: 5.0
+    - front_wheels: [9.0, 9.0]
+      rear_wheels: [3.0, 3.0, 3.0, 3.0]
+      max_duration: 5.0
+    - front_wheels: [11.0, 11.0]
+      rear_wheels: [3.0, 3.0, 3.0, 3.0]
+      max_duration: 5.0
+
+hunter:
+  wheel_radius: 0.135
+  wheels: ["re_left", "fr_left", "re_right", "fr_right"]
+  front_wheels: ["fr_left", "fr_right"]
+  motion_steps:
+    - front_wheels: [5.0, 5.0]
+      rear_wheels: [3.0, 3.0]
+      max_duration: 5.0
+    - front_wheels: [7.0, 7.0]
+      rear_wheels: [3.0, 3.0]
+      max_duration: 5.0
+    - front_wheels: [9.0, 9.0]
+      rear_wheels: [3.0, 3.0]
+      max_duration: 5.0
+    - front_wheels: [11.0, 11.0]
+      rear_wheels: [3.0, 3.0]
+      max_duration: 5.0

@@ -1,0 +1,43 @@
+seed: 42
+
+models:
+  policy:
+    network:
+      - layers: [256, 160, 128]
+        activations: leaky_relu
+  critic:
+    network:
+      - layers: [256, 160, 128]
+        activations: leaky_relu
+
+memory:
+  total_size: 200000
+  device: cpu
+
+agent:
+  class: TD3
+  gradient_steps: 1
+  batch_size: 256
+  discount_factor: 0.99
+  polyak: 0.005
+  learning_rate: 3.0e-4
+  random_timesteps: 5000
+  learning_starts: 5000
+  grad_norm_clip: 1.0
+  exploration_noise:
+    mean: 0.0
+    std: 0.1
+  policy_delay: 2
+  smooth_regularization_noise:
+    mean: 0.0
+    std: 0.1
+  smooth_regularization_clip: 0.3
+  experiment:
+    directory: ""
+    experiment_name: ""
+    write_interval: auto
+    checkpoint_interval: auto
+
+trainer:
+  timesteps: 1000000
+  environment_info: log

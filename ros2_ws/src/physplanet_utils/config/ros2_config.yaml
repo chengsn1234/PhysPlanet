@@ -1,0 +1,19 @@
+# ROS2 launch 功能开关
+# terrain_marker_publisher 始终启动（无开关）
+
+perception:
+  elevation_mapping: false     # 感知主管线总开关（含 depth→pointcloud + camera_info + local_height_scan）
+  # em 关 → camera_info/depth_to_pointcloud/local_height_scan 全跳过（它们是 em 的前置/后置依赖）
+
+identification:
+  friction_identifier: false   # 在线摩擦辨识节点
+
+viz:
+  rviz: true                   # RViz
+
+# GT 层加载开关（控制 elevation_mapping 里加载哪些 GT 插件）
+gt_layers:
+  friction_gt: false           # friction_map → friction_GT 层
+  soil_params: false           # soil_params_map → Kc/Kphi/n0/n1/c/phi/K 层
+  terrain_class: false         # terrain_class_map → terrain_class_GT 层
+  rock_gt: false               # rock_map → rock_GT 层

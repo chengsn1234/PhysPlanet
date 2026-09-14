@@ -1,0 +1,53 @@
+# 分层摩擦平地测试：terrain_height=0.01（几何近平，坡度≈0 可忽略），
+# 但 _height_to_layer_indices 按归一化高度仍分 5 层 → 5 个摩擦斑块。
+# 车开过不同斑块 → 纯摩擦差异（无坡度干扰），肉眼/辨识都能用。
+# 独立于 terrain_slope_config（上坡 W1 测试保留不动）。
+terrain_name: "terrain_flat"
+sky: mars
+
+hm: 11
+heightmap_dir: ""
+
+terrain_size: 100.0
+terrain_height: 0.01        # 近平：起伏 1cm，坡度可忽略；归一化分层仍产 5 个摩擦斑块
+terrain_downsample: 2
+gt_resolution: 0.1
+
+rock_k: 0.0
+rock_seed: 42
+rock_sizes: [0.4, 0.8, 1.6, 3.2, 6.4]
+rock_downsample: 16
+
+texture_layers:
+  # 从低摩擦到高摩擦，分成 5 层
+  - name: "layer_1"
+    path: "textures/mars/1.jpg"
+    static_friction: 0.05
+    dynamic_friction: 0.03
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.95, n1: 0.5, c: 462.3, phi: 0.25, K: 0.014}
+  - name: "layer_2"
+    path: "textures/mars/2.jpg"
+    static_friction: 0.3
+    dynamic_friction: 0.2
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.87, n1: 0.45, c: 462.3, phi: 0.45, K: 0.014}
+  - name: "layer_3"
+    path: "textures/mars/3.jpg"
+    static_friction: 2.0
+    dynamic_friction: 1.5
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.80, n1: 0.4, c: 462.3, phi: 0.61, K: 0.014}
+  - name: "layer_4"
+    path: "textures/mars/4.jpg"
+    static_friction: 8.0
+    dynamic_friction: 6.0
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.72, n1: 0.35, c: 462.3, phi: 0.80, K: 0.014}
+  - name: "layer_5"
+    path: "textures/mars/5.jpg"
+    static_friction: 8.0
+    dynamic_friction: 6.0
+    restitution: 0.0
+    soil: {Kc: 13600.0, Kphi: 2259100.0, n0: 0.65, n1: 0.3, c: 462.3, phi: 1.00, K: 0.014}
+texture_resolution: 0.05

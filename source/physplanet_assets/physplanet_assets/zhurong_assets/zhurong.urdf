@@ -1,0 +1,633 @@
+<?xml version="1.0"?>
+<robot name="zhurong_mars_rover">
+
+  <!-- Base link -->
+  <link name="base_link"/>
+  <joint name="base_c_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Chassis -->
+  <link name="chassis">
+    <inertial>
+      <origin xyz="-0.055 0 0.048" rpy="0 0 0"/>
+      <mass value="115.0"/>
+      <inertia ixx="9.0675" ixy="0.00018" ixz="-0.0011" iyy="11.333" iyz="0.00003" izz="15.759"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/base_link.STL"/>
+      </geometry>
+      <material name="chassis_mat"><color rgba="0.51 0.38 0.15 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0.85 0 0.105" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.25 1.6 0.502"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- LEFT FRONT ROCKER -->
+  <link name="suspension_arm_F_L">
+    <inertial>
+      <origin xyz="0.374 0.093 0" rpy="0 0 0"/>
+      <mass value="5.916"/>
+      <inertia ixx="0.045" ixy="-0.127" ixz="0" iyy="0.528" iyz="0" izz="0.567"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/leftMainRockerF_Link.STL"/>
+      </geometry>
+      <material name="arm_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_arm_F_L_joint" type="revolute">
+    <parent link="chassis"/>
+    <child link="suspension_arm_F_L"/>
+    <origin xyz="0 0.425 0" rpy="0 0 0"/>
+    <limit lower="-0.4" upper="0.4" effort="10000" velocity="10"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- LEFT FRONT STEER -->
+  <link name="suspension_steer_F_L">
+    <inertial>
+      <origin xyz="0 0.074 -0.163" rpy="0 0 0"/>
+      <mass value="3.466"/>
+      <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.023" iyz="0.003" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/steerSupport_LF_Link.STL"/>
+      </geometry>
+      <material name="steer_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_steer_F_L_joint" type="revolute">
+    <parent link="suspension_arm_F_L"/>
+    <child link="suspension_steer_F_L"/>
+    <origin xyz="0.775 0.227 -0.04" rpy="0 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="10000" velocity="10"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- LEFT FRONT WHEEL -->
+  <link name="front_wheel_L">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="9.87"/>
+      <inertia ixx="0.101" ixy="0" ixz="0" iyy="0.127" iyz="0" izz="0.101"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/wheel_LF_Link.STL"/>
+      </geometry>
+      <material name="wheel_mat"><color rgba="0.53 0.51 0.49 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.15" length="0.2"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="front_wheel_L_joint" type="continuous">
+    <parent link="suspension_steer_F_L"/>
+    <child link="front_wheel_L"/>
+    <origin xyz="0 0 -0.21" rpy="0 0 0"/>
+    <limit effort="10000" velocity="100"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- LEFT BACK ROCKER -->
+  <link name="suspension_arm_B_L">
+    <inertial>
+      <origin xyz="-0.268 0.078 -0.035" rpy="0 0 0"/>
+      <mass value="4.492"/>
+      <inertia ixx="0.014" ixy="0.022" ixz="-0.013" iyy="0.11" iyz="0.003" izz="0.111"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/leftMainRockerB_Link.STL"/>
+      </geometry>
+      <material name="arm_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_arm_B_L_joint" type="revolute">
+    <parent link="chassis"/>
+    <child link="suspension_arm_B_L"/>
+    <origin xyz="0 0.4755 0" rpy="0 0 0"/>
+    <limit lower="-0.4" upper="0.4" effort="10000" velocity="10"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- LEFT SUB ROCKER -->
+  <link name="suspension_arm_B2_L">
+    <inertial>
+      <origin xyz="0 0.04 0.028" rpy="0 0 0"/>
+      <mass value="6.22"/>
+      <inertia ixx="0.014" ixy="0" ixz="0" iyy="0.449" iyz="0.002" izz="0.446"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/leftSubRocker_Link.STL"/>
+      </geometry>
+      <material name="arm_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_arm_B2_L_joint" type="revolute">
+    <parent link="suspension_arm_B_L"/>
+    <child link="suspension_arm_B2_L"/>
+    <origin xyz="-0.3875 0.147 -0.05" rpy="0 0 0"/>
+    <limit lower="-1.2" upper="0.1" effort="10000" velocity="10"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- LEFT MIDDLE STEER -->
+  <link name="suspension_steer_M_L">
+    <inertial>
+      <origin xyz="0 0.074 -0.163" rpy="0 0 0"/>
+      <mass value="3.466"/>
+      <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.023" iyz="0.003" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/steerSupport_LM_Link.STL"/>
+      </geometry>
+      <material name="steer_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_steer_M_L_joint" type="revolute">
+    <parent link="suspension_arm_B2_L"/>
+    <child link="suspension_steer_M_L"/>
+    <origin xyz="0.3875 0.03 0.01" rpy="0 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="10000" velocity="10"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- LEFT MIDDLE WHEEL -->
+  <link name="middle_wheel_L">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="9.87"/>
+      <inertia ixx="0.101" ixy="0" ixz="0" iyy="0.127" iyz="0" izz="0.101"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/wheel_LM_Link.STL"/>
+      </geometry>
+      <material name="wheel_mat"><color rgba="0.53 0.51 0.49 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.15" length="0.2"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="middle_wheel_L_joint" type="continuous">
+    <parent link="suspension_steer_M_L"/>
+    <child link="middle_wheel_L"/>
+    <origin xyz="0 0 -0.21" rpy="0 0 0"/>
+    <limit effort="10000" velocity="100"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- LEFT BACK STEER -->
+  <link name="suspension_steer_B_L">
+    <inertial>
+      <origin xyz="0 0.074 -0.163" rpy="0 0 0"/>
+      <mass value="3.466"/>
+      <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.023" iyz="0.003" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/steerSupport_LB_Link.STL"/>
+      </geometry>
+      <material name="steer_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_steer_B_L_joint" type="revolute">
+    <parent link="suspension_arm_B2_L"/>
+    <child link="suspension_steer_B_L"/>
+    <origin xyz="-0.3875 0.03 0.01" rpy="0 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="10000" velocity="10"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- LEFT BACK WHEEL -->
+  <link name="back_wheel_L">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="9.87"/>
+      <inertia ixx="0.101" ixy="0" ixz="0" iyy="0.127" iyz="0" izz="0.101"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/wheel_LB_Link.STL"/>
+      </geometry>
+      <material name="wheel_mat"><color rgba="0.53 0.51 0.49 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.15" length="0.2"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="back_wheel_L_joint" type="continuous">
+    <parent link="suspension_steer_B_L"/>
+    <child link="back_wheel_L"/>
+    <origin xyz="0 0 -0.21" rpy="0 0 0"/>
+    <limit effort="10000" velocity="100"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- RIGHT FRONT ROCKER -->
+  <link name="suspension_arm_F_R">
+    <inertial>
+      <origin xyz="0.374 -0.093 0" rpy="0 0 0"/>
+      <mass value="5.916"/>
+      <inertia ixx="0.045" ixy="0.127" ixz="0" iyy="0.528" iyz="0" izz="0.567"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/rightMainRockerF_Link.STL"/>
+      </geometry>
+      <material name="arm_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_arm_F_R_joint" type="revolute">
+    <parent link="chassis"/>
+    <child link="suspension_arm_F_R"/>
+    <origin xyz="0 -0.425 0" rpy="0 0 0"/>
+    <limit lower="-0.4" upper="0.4" effort="10000" velocity="10"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- RIGHT FRONT STEER -->
+  <link name="suspension_steer_F_R">
+    <inertial>
+      <origin xyz="0 -0.074 -0.163" rpy="0 0 0"/>
+      <mass value="3.466"/>
+      <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.023" iyz="-0.003" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/steerSupport_RF_Link.STL"/>
+      </geometry>
+      <material name="steer_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_steer_F_R_joint" type="revolute">
+    <parent link="suspension_arm_F_R"/>
+    <child link="suspension_steer_F_R"/>
+    <origin xyz="0.775 -0.227 -0.04" rpy="0 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="10000" velocity="10"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- RIGHT FRONT WHEEL -->
+  <link name="front_wheel_R">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="9.87"/>
+      <inertia ixx="0.101" ixy="0" ixz="0" iyy="0.127" iyz="0" izz="0.101"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="3.14159 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/wheel_RF_Link.STL"/>
+      </geometry>
+      <material name="wheel_mat"><color rgba="0.53 0.51 0.49 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.15" length="0.2"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="front_wheel_R_joint" type="continuous">
+    <parent link="suspension_steer_F_R"/>
+    <child link="front_wheel_R"/>
+    <origin xyz="0 0 -0.21" rpy="0 0 0"/>
+    <limit effort="10000" velocity="100"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- RIGHT BACK ROCKER -->
+  <link name="suspension_arm_B_R">
+    <inertial>
+      <origin xyz="-0.268 -0.078 -0.035" rpy="0 0 0"/>
+      <mass value="4.492"/>
+      <inertia ixx="0.014" ixy="-0.022" ixz="-0.013" iyy="0.11" iyz="-0.003" izz="0.111"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/rightMainRockerB_Link.STL"/>
+      </geometry>
+      <material name="arm_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_arm_B_R_joint" type="revolute">
+    <parent link="chassis"/>
+    <child link="suspension_arm_B_R"/>
+    <origin xyz="0 -0.4755 0" rpy="0 0 0"/>
+    <limit lower="-0.4" upper="0.4" effort="10000" velocity="10"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- RIGHT SUB ROCKER -->
+  <link name="suspension_arm_B2_R">
+    <inertial>
+      <origin xyz="0 -0.04 0.028" rpy="0 0 0"/>
+      <mass value="6.22"/>
+      <inertia ixx="0.014" ixy="0" ixz="0" iyy="0.449" iyz="-0.002" izz="0.446"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/rightSubRocker_Link.STL"/>
+      </geometry>
+      <material name="arm_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_arm_B2_R_joint" type="revolute">
+    <parent link="suspension_arm_B_R"/>
+    <child link="suspension_arm_B2_R"/>
+    <origin xyz="-0.3875 -0.147 -0.05" rpy="0 0 0"/>
+    <limit lower="-1.2" upper="0.1" effort="10000" velocity="10"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- RIGHT MIDDLE STEER -->
+  <link name="suspension_steer_M_R">
+    <inertial>
+      <origin xyz="0 -0.074 -0.163" rpy="0 0 0"/>
+      <mass value="3.466"/>
+      <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.023" iyz="-0.003" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/steerSupport_RM_Link.STL"/>
+      </geometry>
+      <material name="steer_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_steer_M_R_joint" type="revolute">
+    <parent link="suspension_arm_B2_R"/>
+    <child link="suspension_steer_M_R"/>
+    <origin xyz="0.3875 -0.03 0.01" rpy="0 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="10000" velocity="10"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- RIGHT MIDDLE WHEEL -->
+  <link name="middle_wheel_R">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="9.87"/>
+      <inertia ixx="0.101" ixy="0" ixz="0" iyy="0.127" iyz="0" izz="0.101"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="3.14159 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/wheel_RM_Link.STL"/>
+      </geometry>
+      <material name="wheel_mat"><color rgba="0.53 0.51 0.49 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.15" length="0.2"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="middle_wheel_R_joint" type="continuous">
+    <parent link="suspension_steer_M_R"/>
+    <child link="middle_wheel_R"/>
+    <origin xyz="0 0 -0.21" rpy="0 0 0"/>
+    <limit effort="10000" velocity="100"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- RIGHT BACK STEER -->
+  <link name="suspension_steer_B_R">
+    <inertial>
+      <origin xyz="0 -0.074 -0.163" rpy="0 0 0"/>
+      <mass value="3.466"/>
+      <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.023" iyz="-0.003" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/steerSupport_RB_Link.STL"/>
+      </geometry>
+      <material name="steer_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="suspension_steer_B_R_joint" type="revolute">
+    <parent link="suspension_arm_B2_R"/>
+    <child link="suspension_steer_B_R"/>
+    <origin xyz="-0.3875 -0.03 0.01" rpy="0 0 0"/>
+    <limit lower="-0.6" upper="0.6" effort="10000" velocity="10"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- RIGHT BACK WHEEL -->
+  <link name="back_wheel_R">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="9.87"/>
+      <inertia ixx="0.101" ixy="0" ixz="0" iyy="0.127" iyz="0" izz="0.101"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="3.14159 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/wheel_RB_Link.STL"/>
+      </geometry>
+      <material name="wheel_mat"><color rgba="0.53 0.51 0.49 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.15" length="0.2"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="back_wheel_R_joint" type="continuous">
+    <parent link="suspension_steer_B_R"/>
+    <child link="back_wheel_R"/>
+    <origin xyz="0 0 -0.21" rpy="0 0 0"/>
+    <limit effort="10000" velocity="100"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <link name="PTZSupport_Link">
+    <inertial>
+      <origin xyz="0 0 0.353" rpy="0 0 0"/>
+      <mass value="0.687"/>
+      <inertia ixx="0.0446" ixy="0" ixz="0" iyy="0.0445" iyz="0" izz="0.0004"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/PTZSupport_Link.STL"/>
+      </geometry>
+      <material name="mast_mat"><color rgba="0.51 0.38 0.15 1"/></material>
+    </visual>
+  </link>
+  <joint name="mast_p_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="PTZSupport_Link"/>
+    <origin xyz="0.372 0 0.356" rpy="0 0 0"/>
+  </joint>
+  <link name="PTZBase_Link">
+    <inertial>
+      <origin xyz="0 0 0.0015" rpy="0 0 0"/>
+      <mass value="0.06"/>
+      <inertia ixx="0.00006" ixy="0" ixz="0" iyy="0.00003" iyz="0" izz="0.00009"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/PTZBase_Link.STL"/>
+      </geometry>
+      <material name="ptz_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="PTZBase_joint" type="fixed">
+    <parent link="PTZSupport_Link"/>
+    <child link="PTZBase_Link"/>
+    <origin xyz="-0.00088 0 0.669" rpy="0 0 0"/>
+  </joint>
+  <link name="PTZYaw_Link">
+    <inertial>
+      <origin xyz="-0.383 0.027 -1.069" rpy="0 0 0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.298" ixy="0.0001" ixz="-0.015" iyy="0.254" iyz="0" izz="0.467"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.016 -0.027 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/PTZYaw_Link.STL"/>
+      </geometry>
+      <material name="ptz_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="PTZYaw_joint" type="revolute">
+    <parent link="PTZBase_Link"/>
+    <child link="PTZYaw_Link"/>
+    <origin xyz="0 0 0.023" rpy="0 0 0"/>
+    <limit lower="-1.0" upper="1.0" effort="10" velocity="10"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.2" friction="0.2"/>
+  </joint>
+  <link name="PTZPitch_Link">
+    <inertial>
+      <origin xyz="0 -0.06 0.03" rpy="0 0 0"/>
+      <mass value="0.064"/>
+      <inertia ixx="0.00007" ixy="0" ixz="0" iyy="0.00003" iyz="0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/PTZPitch_Link.STL"/>
+      </geometry>
+      <material name="ptz_mat"><color rgba="0.79 0.82 0.93 1"/></material>
+    </visual>
+  </link>
+  <joint name="PTZPitch_joint" type="revolute">
+    <parent link="PTZYaw_Link"/>
+    <child link="PTZPitch_Link"/>
+    <origin xyz="0 0.055 0.062" rpy="0 0.5 0"/>
+    <limit lower="-1.0" upper="1.0" effort="10" velocity="10"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.2" friction="0.2"/>
+  </joint>
+  <link name="ZEDNav_Link">
+    <inertial>
+      <origin xyz="0.0155 0 -0.00055" rpy="0 0 0"/>
+      <mass value="0.3"/>
+      <inertia ixx="0.0029" ixy="0" ixz="0" iyy="0.00018" iyz="0" izz="0.0029"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/ZEDNav_Link.STL"/>
+      </geometry>
+      <material name="cam_mat"><color rgba="1.0 0.74 0.59 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/ZEDNav_Link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="mast_cameras_joint" type="fixed">
+    <parent link="PTZPitch_Link"/>
+    <child link="ZEDNav_Link"/>
+    <origin xyz="0 -0.055 0.047" rpy="0 0 0"/>
+  </joint>
+  <link name="camera_obs_F_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="9.1875e-09" ixy="0" ixz="0" iyy="9.1875e-09" iyz="0" izz="1.378125e-08"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zhurong_description/meshes/obsZED_Link.STL"/>
+      </geometry>
+      <material name="cam_mat"><color rgba="1.0 0.74 0.59 1"/></material>
+    </visual>
+  </link>
+  <joint name="obs_f_camera_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="camera_obs_F_link"/>
+    <origin xyz="0.673358 0 0.313007" rpy="0 0.4 0"/>
+  </joint>
+  <link name="camera_obs_L_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="9.1875e-09" ixy="0" ixz="0" iyy="9.1875e-09" iyz="0" izz="1.378125e-08"/>
+    </inertial>
+  </link>
+  <joint name="obs_l_camera_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="camera_obs_L_link"/>
+    <origin xyz="0 0.462 0.321" rpy="0.4 0 1.57"/>
+  </joint>
+  <link name="camera_obs_R_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="9.1875e-09" ixy="0" ixz="0" iyy="9.1875e-09" iyz="0" izz="1.378125e-08"/>
+    </inertial>
+  </link>
+  <joint name="obs_r_camera_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="camera_obs_R_link"/>
+    <origin xyz="-0.006 -0.457 0.317" rpy="-0.4 0 -1.57"/>
+  </joint>
+</robot>
